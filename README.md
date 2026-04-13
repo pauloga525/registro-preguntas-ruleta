@@ -49,7 +49,7 @@ Valores por defecto dentro de `app/config.py`:
 ```python
 MONGO_URI = "mongodb://localhost:27017"
 DB_NAME = "ruleta_db"
-JWT_SECRET = "b7f9e243adb05e3bf4c86f33ab1d8217804147a65f00467fcbfaa8bdfb6e3b3e"
+JWT_SECRET = ""
 JWT_ALGORITHM = "HS256"
 ```
 
