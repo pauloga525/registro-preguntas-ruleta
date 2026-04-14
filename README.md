@@ -2,17 +2,17 @@
 Documentacion: https://deepwiki.com/pauloga525/registro-preguntas-ruleta/1-project-overview
 ## Iniciar
 
-# Ejecutar ambiente
+## Ejecutar ambiente
 Crear ambiente en python
 python -m venv venv
 
-# Inciar el ambiente windows
+## Inciar el ambiente windows
  venv\Scripts\activate
 
-# Iniciar Ambiente Linux / Mac
+## Iniciar Ambiente Linux / Mac
 source venv/bin/activate
 
-# Comando de ejecucion
+## Comando de ejecucion
 python -m uvicorn app.main:app --reload
 
 ## Descripción
