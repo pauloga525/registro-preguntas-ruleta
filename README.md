@@ -1,5 +1,20 @@
 # Registro de Preguntas Ruleta
 
+## Iniciar
+
+# Ejecutar ambiente
+Crear ambiente en python
+python -m venv venv
+
+# Inciar el ambiente windows
+ venv\Scripts\activate
+
+# Iniciar Ambiente Linux / Mac
+source venv/bin/activate
+
+# Comando de ejecucion
+python -m uvicorn app.main:app --reload
+
 ## Descripción
 
 Backend en FastAPI para administrar preguntas, materias y niveles de docentes. Incluye autenticación JWT, gestión de preguntas con imágenes Base64 o archivos, y control de acceso básico.
