@@ -3,6 +3,8 @@ from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime
 from jose import jwt
 from bson import ObjectId
+import secrets
+import string
 
 from ..models.user import User, UserLogin
 from ..database import docentes_collection, revoked_tokens_collection
@@ -30,6 +32,21 @@ class MessageOut(BaseModel):
     message: str
 
 
+class RecoverPasswordRequest(BaseModel):
+    cedula: str
+    email: str
+
+
+class RecoverPasswordOut(BaseModel):
+    message: str
+    temporary_password: str
+
+
+def generate_temporary_password(length: int = 12) -> str:
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for _ in range(length))
+
+
 # ---------------------- REGISTER ----------------------
 @router.post("/register", response_model=MessageOut)
 async def register(user: User):
@@ -51,6 +68,28 @@ async def register(user: User):
     })
     
     return {"message": "Usuario creado"}
+
+
+# ---------------------- RECUPERAR CONTRASEÑA ----------------------
+@router.post("/recover-password", response_model=RecoverPasswordOut)
+async def recover_password(payload: RecoverPasswordRequest):
+    found = await docentes_collection.find_one({"cedula": payload.cedula, "email": payload.email})
+
+    if not found:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+    temporary_password = generate_temporary_password()
+    hashed_password = hash_password(temporary_password)
+
+    await docentes_collection.update_one(
+        {"_id": found["_id"]},
+        {"$set": {"password": hashed_password}}
+    )
+
+    return {
+        "message": "Se ha generado una nueva contraseña temporal",
+        "temporary_password": temporary_password
+    }
 
 
 # ---------------------- LOGIN ----------------------
